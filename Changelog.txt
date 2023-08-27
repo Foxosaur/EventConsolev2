@@ -1,0 +1,12 @@
+﻿CHANGELOG
+-----
+EventConsolev2 - Second iteration at attempting to essentially write an event parser and editor(to come later).
+
+v0.01
+-Initial load of a sample .evt file and load into a custom type, in a list.  Appears to parse fine and completely.
+
+-----
+Limitations / WIP
+
+-Does not retain commented lines (;) and ignores them
+-Does not save the start and end blocks (EVENT XXXX and END) but event ids are retained
