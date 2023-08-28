@@ -10,6 +10,9 @@ v0.02
 - Will create an output to a .evt file if option taken
 - Added save and end blocks as part of the output to a new .evt file
 
+v0.03
+-Added some code to put the ; (comment) below the event number but above the event itself. So there is some nice inline information.
+
 -----
 Limitations / WIP
 

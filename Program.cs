@@ -29,12 +29,20 @@ while ((line = ReaderOfEvents.ReadLine()) != null)
             ListOfEvents.Add(LineEvent);
         }
     }
-    if (InsideEvent == true && (line.StartsWith("A") || (line.StartsWith("O") || line.StartsWith("E ")))) // Watch the trailing space of the startswith("E_") its needed.
+    if (InsideEvent == true && (line.StartsWith("A") || (line.StartsWith("O") || line.StartsWith("E ") || line.StartsWith(";")))) // Watch the trailing space of the startswith("E_") its needed.
     {
+
         LineOfEvent LineEvent = new();
-        TypeFunction = line[0];
-        Function = line.Split(' ').Skip(1).FirstOrDefault();
-        FunctionParams = line.Split(' ').Skip(2).Select(n => Convert.ToInt32(n)).ToArray();
+        if (line.StartsWith("A") || (line.StartsWith("O") || line.StartsWith("E ")))
+        {
+            TypeFunction = line[0];
+            Function = line.Split(' ').Skip(1).FirstOrDefault();
+            FunctionParams = line.Split(' ').Skip(2).Select(n => Convert.ToInt32(n)).ToArray();
+        }
+        if(line.StartsWith(";"))
+        {
+            LineEvent.Note = line;
+        }
         
         LineEvent.ID = EventNum;
         LineEvent.TypeFunction = TypeFunction;
@@ -42,8 +50,8 @@ while ((line = ReaderOfEvents.ReadLine()) != null)
         LineEvent.FunctionParams = FunctionParams;
         ListOfEvents.Add(LineEvent);
     }
-
-
+   
+    
     if (line == "END")
     {
         InsideEvent = false;
@@ -81,21 +89,30 @@ if (answer == "yes" || answer == "Yes")
 
             if (item.Function.StartsWith("EVENT ") || item.Function.StartsWith("END"))
             {
-                writer.WriteLine(item.Function);
                 if (item.Function.StartsWith("EVENT "))
                 {
-                    Console.WriteLine("\r\n\r\n");
+                    Console.WriteLine("\r\n\r\n" + item.Note + "\r\n");
                 }
+                writer.WriteLine(item.Function);
+               
             }
             else
             {
-                ParamAsString = "";
-                foreach (int param in item.FunctionParams)
+                if(item.Note.StartsWith(";"))
                 {
-                    ParamAsString += param + " ";
+                    writer.WriteLine(item.Note);
                 }
-                ParamAsString.Trim();
-                writer.WriteLine(item.TypeFunction + " " + item.Function + " " + ParamAsString.ToString());
+                else
+                {
+                    ParamAsString = "";
+                    foreach (int param in item.FunctionParams)
+                    {
+                        ParamAsString += param + " ";
+                    }
+                    ParamAsString.Trim();
+                    writer.WriteLine(item.TypeFunction + " " + item.Function + " " + ParamAsString.ToString());
+                }
+               
             }
         }
     }
