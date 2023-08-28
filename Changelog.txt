@@ -5,8 +5,18 @@ EventConsolev2 - Second iteration at attempting to essentially write an event pa
 v0.01
 -Initial load of a sample .evt file and load into a custom type, in a list.  Appears to parse fine and completely.
 
+v0.02
+- Search for an evt ability by number alone.
+- Will create an output to a .evt file if option taken
+- Added save and end blocks as part of the output to a new .evt file
+
 -----
 Limitations / WIP
 
 -Does not retain commented lines (;) and ignores them
--Does not save the start and end blocks (EVENT XXXX and END) but event ids are retained
+-Does not save the start and end blocks (EVENT XXXX and END) but event ids are retained (Added as part of the output in v0.02)
+-Parsing of Params is stripping the leading 0... May not be important. Leaving as is for now. If it presents a problem for < 10 numbers, can just treat them as strings instead (urgh).
+-Need to offer up choices to load a file, save and search rather than anything else.
+
+
+
