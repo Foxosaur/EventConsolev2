@@ -8,14 +8,19 @@ string line;
 string EventNum = "";
 Char TypeFunction = 'a';
 string Function = "";
-int[] FunctionParams = { };
+String[] FunctionParams = { };
 string ParamAsString = "";
-using (var streamReader = new StreamReader(@"C:\server\arcanine\map\3.evt", Encoding.UTF8))
-{
-    text = streamReader.ReadToEnd();
-}
+Console.WriteLine("To use this EVT reader, please copy the files of this executable into the folder that contain your EVTs, and only then run this.\rIf you havn't already done this, close this first. ");
+Console.WriteLine("Please enter the filename of the EVT to load with its file extension (.evt) - e.g. 1.evt");
+String filename = Console.ReadLine();
 
-StringReader ReaderOfEvents = new(text);
+    using (var streamReader = new StreamReader(filename, Encoding.UTF8))
+    {
+        text = streamReader.ReadToEnd();
+    }
+
+    StringReader ReaderOfEvents = new(text);
+
 while ((line = ReaderOfEvents.ReadLine()) != null)
 {
     if (InsideEvent == false)
@@ -37,21 +42,23 @@ while ((line = ReaderOfEvents.ReadLine()) != null)
         {
             TypeFunction = line[0];
             Function = line.Split(' ').Skip(1).FirstOrDefault();
-            FunctionParams = line.Split(' ').Skip(2).Select(n => Convert.ToInt32(n)).ToArray();
+            
+            
+            FunctionParams = line.Split(' ').Skip(2).ToArray();
         }
-        if(line.StartsWith(";"))
+        if (line.StartsWith(";"))
         {
             LineEvent.Note = line;
         }
-        
+
         LineEvent.ID = EventNum;
         LineEvent.TypeFunction = TypeFunction;
         LineEvent.Function = Function;
         LineEvent.FunctionParams = FunctionParams;
         ListOfEvents.Add(LineEvent);
     }
-   
-    
+
+
     if (line == "END")
     {
         InsideEvent = false;
@@ -61,58 +68,61 @@ while ((line = ReaderOfEvents.ReadLine()) != null)
     }
 }
 ReaderOfEvents.Dispose();
-Console.WriteLine("Enter event number to find");
+Console.WriteLine("Enter event number to find. E.g. 02");
 string SearchEvent = Console.ReadLine();
 
-Console.WriteLine("EVENT " + SearchEvent + "\n\n");
+Console.WriteLine("EVENT " + SearchEvent);
 foreach (LineOfEvent item in ListOfEvents.Where(x => x.ID == SearchEvent))
 {
     ParamAsString = "";
-    foreach (int param in item.FunctionParams)
+    foreach (string param in item.FunctionParams)
     {
         ParamAsString += param + " ";
     }
     ParamAsString.Trim();
     Console.WriteLine(item.TypeFunction + " " + item.Function + " " + ParamAsString.ToString());
 }
-Console.WriteLine("\r\n\r\nWant some output?");
+Console.WriteLine("\r\n\r\nSave output to file - what filename? E.g. test.evt");
 string answer = Console.ReadLine();
 //
 //
 //try and save some output
-if (answer == "yes" || answer == "Yes")
+if (answer is not null)
 {
-    using (StreamWriter writer = new StreamWriter("C:\\server\\test.evt"))
+    using (StreamWriter writer = new StreamWriter(answer))
     {
         foreach (LineOfEvent item in ListOfEvents)
         {
 
             if (item.Function.StartsWith("EVENT ") || item.Function.StartsWith("END"))
             {
+                writer.WriteLine(item.Function);
                 if (item.Function.StartsWith("EVENT "))
                 {
-                    Console.WriteLine("\r\n\r\n" + item.Note + "\r\n");
+                    writer.WriteLine(item.Note + "\r\n");
                 }
-                writer.WriteLine(item.Function);
-               
+                if(item.Function.StartsWith("END"))
+                {
+                    writer.WriteLine("\r\n");
+                }
             }
             else
             {
-                if(item.Note.StartsWith(";"))
+                if (item.Note.StartsWith(";"))
                 {
                     writer.WriteLine(item.Note);
                 }
                 else
                 {
                     ParamAsString = "";
-                    foreach (int param in item.FunctionParams)
+                    foreach (string param in item.FunctionParams)
                     {
                         ParamAsString += param + " ";
                     }
                     ParamAsString.Trim();
                     writer.WriteLine(item.TypeFunction + " " + item.Function + " " + ParamAsString.ToString());
                 }
-               
+
             }
         }
     }

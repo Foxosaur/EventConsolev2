@@ -2,6 +2,13 @@
 -----
 EventConsolev2 - Second iteration at attempting to essentially write an event parser and editor(to come later).
 
+This project is made available to give you an idea of how to parse the Myth of Somas quests and maybe build your own editor (which is my next step). 
+
+As this isn't an editor, the best it does is cleans up old ; comment lines from Esoma and other Somas and puts in extra spacing but its intent is to show someone "how " they might create an editor with some of the parsing already done and code available. 
+Oh and I didn't say it was efficient or bug free, I'm just a hobbyist.
+
+With me sharing this, I do it in the hope to encourage others to also share as they learn too.
+
 v0.01
 -Initial load of a sample .evt file and load into a custom type, in a list.  Appears to parse fine and completely.
 
@@ -12,14 +19,20 @@ v0.02
 
 v0.03
 -Added some code to put the ; (comment) below the event number but above the event itself. So there is some nice inline information.
+-FunctionParams are now a string array instead of an int array to handle a couple of cases of bad casting, which also fixes the numerics below 10.
+-User can now type a file name of an evt to load and save but there is no error handling.
 
 -----
-Limitations / WIP
 
--Does not retain commented lines (;) and ignores them
+Fixes
+
+-Does not retain commented lines (;) and ignores them (As of v0.02 these are saved providing they exist within the event block, this is purposely to make them "inline" and readable whilst associated to the event)
 -Does not save the start and end blocks (EVENT XXXX and END) but event ids are retained (Added as part of the output in v0.02)
--Parsing of Params is stripping the leading 0... May not be important. Leaving as is for now. If it presents a problem for < 10 numbers, can just treat them as strings instead (urgh).
--Need to offer up choices to load a file, save and search rather than anything else.
+-Parsing of Params is stripping the leading 0... May not be important. Leaving as is for now. If it presents a problem for < 10 numbers, can just treat them as strings instead (urgh). (Fixed in v0.03)
+-Need to offer up choices to load a file, save and search rather than anything else. (Added as of v0.03, not worth adding much more for a console application).
 
+Limitations
+
+- Little / No sanity checking.
 
 
