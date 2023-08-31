@@ -6,7 +6,7 @@ string text;
 bool InsideEvent = false;
 string line;
 string EventNum = "";
-Char TypeFunction = 'a';
+Char TypeFunction = '-';
 string Function = "";
 String[] FunctionParams = { };
 string ParamAsString = "";
@@ -27,6 +27,7 @@ while ((line = ReaderOfEvents.ReadLine()) != null)
     {
         if (line.StartsWith("EVENT "))
         {
+            
             InsideEvent = true;
             EventNum = line.Split(' ').Skip(1).FirstOrDefault();
             LineOfEvent LineEvent = new();
@@ -61,8 +62,10 @@ while ((line = ReaderOfEvents.ReadLine()) != null)
 
     if (line == "END")
     {
+        
         InsideEvent = false;
         LineOfEvent LineEvent = new();
+        LineEvent.ID = EventNum;
         LineEvent.Function = "END";
         ListOfEvents.Add(LineEvent);
     }
@@ -72,16 +75,36 @@ Console.WriteLine("Enter event number to find. E.g. 02");
 string SearchEvent = Console.ReadLine();
 
 Console.WriteLine("EVENT " + SearchEvent);
-foreach (LineOfEvent item in ListOfEvents.Where(x => x.ID == SearchEvent))
+while (ListOfEvents.Where(x => x.ID == SearchEvent).Count() == 0)
 {
-    ParamAsString = "";
-    foreach (string param in item.FunctionParams)
-    {
-        ParamAsString += param + " ";
-    }
-    ParamAsString.Trim();
-    Console.WriteLine(item.TypeFunction + " " + item.Function + " " + ParamAsString.ToString());
+    Console.WriteLine("Nothing found, please try another event number");
+    SearchEvent = Console.ReadLine();
 }
+
+    foreach (LineOfEvent item in ListOfEvents.Where(x => x.ID == SearchEvent))
+    {
+
+        ParamAsString = "";
+        if (item.FunctionParams is not null)
+        {
+            foreach (string param in item.FunctionParams)
+            {
+                ParamAsString += param + " ";
+            }
+            ParamAsString.Trim();
+        }
+
+        if (item.Function != "END")
+        {
+            if (item.Note != "")
+            {
+                Console.WriteLine(item.Note);
+            }
+            Console.WriteLine(item.TypeFunction + " " + item.Function + " " + ParamAsString.ToString());
+        }
+        else { Console.WriteLine(item.Function); }
+    }
+
 Console.WriteLine("\r\n\r\nSave output to file - what filename? E.g. test.evt");
 string answer = Console.ReadLine();
 //
@@ -99,7 +122,7 @@ if (answer is not null)
                 writer.WriteLine(item.Function);
                 if (item.Function.StartsWith("EVENT "))
                 {
-                    writer.WriteLine(item.Note + "\r\n");
+                  //  writer.WriteLine(item.Note + "\r\n");
                 }
                 if(item.Function.StartsWith("END"))
                 {

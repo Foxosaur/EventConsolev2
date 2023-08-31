@@ -22,6 +22,11 @@ v0.03
 -FunctionParams are now a string array instead of an int array to handle a couple of cases of bad casting, which also fixes the numerics below 10.
 -User can now type a file name of an evt to load and save but there is no error handling.
 
+v0.04
+-Fixed missing 'END' of the block when displaying the found event.
+-Fixed knock on effect of displaying extra empty lines.
+-Added a loop if an event number is not found / incorrect.
+
 -----
 
 Fixes
