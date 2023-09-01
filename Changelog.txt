@@ -27,6 +27,10 @@ v0.04
 -Fixed knock on effect of displaying extra empty lines.
 -Added a loop if an event number is not found / incorrect.
 
+v0.05
+- Lines that are END  or EVENT now capture the event ID in the custom list.
+-Fixed the default char for TypeFunction displaying char - which is the equivilent of empty in this app.
+
 -----
 
 Fixes
